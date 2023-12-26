@@ -3,27 +3,13 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Post,
-  Request,
   ServiceUnavailableException,
   UnauthorizedException,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
-import {
-  Crud,
-  CrudController,
-  CrudRequest,
-  Override,
-  ParsedBody,
-  ParsedRequest,
-} from "@dataui/crud";
-import { User } from "./entities/user.entity";
-import { Request as ExpressRequest } from "express";
 import { UserInterceptor } from "./interceptors/user.interceptor";
-import { PROPERTY_DEPS_METADATA } from "@nestjs/common/constants";
 import { LoginUserDto } from "./dto/Login-user.dto";
 
 // @Crud({

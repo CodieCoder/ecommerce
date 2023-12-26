@@ -39,20 +39,22 @@ const app_service_1 = __webpack_require__(8);
 const config_1 = __webpack_require__(9);
 const configuration_1 = tslib_1.__importDefault(__webpack_require__(10));
 const database_module_1 = __webpack_require__(11);
-const card_module_1 = __webpack_require__(18);
-const user_module_1 = __webpack_require__(23);
+const card_module_1 = __webpack_require__(19);
+const user_module_1 = __webpack_require__(26);
+const auth_module_1 = __webpack_require__(34);
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: '.development.env',
+                envFilePath: ".development.env",
                 isGlobal: true,
                 load: [configuration_1.default],
             }),
             database_module_1.DatabaseModule,
             user_module_1.UserModule,
+            auth_module_1.AuthModule,
             card_module_1.CardModule,
         ],
         controllers: [app_controller_1.AppController],
@@ -208,19 +210,19 @@ const users_constants_1 = __webpack_require__(16);
 let User = exports.User = class User extends typeorm_1.BaseEntity {
 };
 tslib_1.__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "id", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 55,
     }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "firstName", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 55,
         nullable: true,
     }),
@@ -228,14 +230,14 @@ tslib_1.__decorate([
 ], User.prototype, "middleName", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 50,
     }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "lastName", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 100,
         unique: true,
     }),
@@ -243,7 +245,7 @@ tslib_1.__decorate([
 ], User.prototype, "email", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 250,
     }),
     (0, class_transformer_1.Exclude)({ toPlainOnly: true }),
@@ -251,7 +253,7 @@ tslib_1.__decorate([
 ], User.prototype, "password", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 25,
         unique: true,
         nullable: true,
@@ -260,14 +262,14 @@ tslib_1.__decorate([
 ], User.prototype, "phoneNumber", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 10,
     }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 40,
         nullable: true,
     }),
@@ -275,14 +277,14 @@ tslib_1.__decorate([
 ], User.prototype, "dateOfBirth", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 65,
     }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "country", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 65,
         nullable: true,
     }),
@@ -290,7 +292,7 @@ tslib_1.__decorate([
 ], User.prototype, "state", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 65,
         nullable: true,
     }),
@@ -298,7 +300,7 @@ tslib_1.__decorate([
 ], User.prototype, "city", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 8,
         nullable: true,
     }),
@@ -306,7 +308,7 @@ tslib_1.__decorate([
 ], User.prototype, "postalCode", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 8,
         nullable: false,
         default: users_constants_1.AccountTypesEnum.Buyer,
@@ -315,20 +317,20 @@ tslib_1.__decorate([
 ], User.prototype, "accountType", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'text',
+        type: "text",
     }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "registrationDevice", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'varchar',
+        type: "varchar",
         length: 20,
     }),
     tslib_1.__metadata("design:type", Object)
 ], User.prototype, "registrationIpAddress", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({
-        type: 'int',
+        type: "int",
         default: 0,
     }),
     tslib_1.__metadata("design:type", Number)
@@ -336,6 +338,8 @@ tslib_1.__decorate([
 exports.User = User = tslib_1.__decorate([
     (0, typeorm_1.Entity)()
 ], User);
+// @OneToMany(() => Card, (card) => card.user)
+// card: Card;
 
 
 /***/ }),
@@ -375,10 +379,123 @@ var AccountTypesEnum;
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Card = void 0;
 const tslib_1 = __webpack_require__(6);
 const typeorm_1 = __webpack_require__(15);
+const constants_1 = __webpack_require__(18);
+const user_entity_1 = __webpack_require__(13);
+let Card = exports.Card = class Card extends typeorm_1.BaseEntity {
+};
+tslib_1.__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "varchar",
+        length: 10,
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof constants_1.CardTypes !== "undefined" && constants_1.CardTypes) === "function" ? _a : Object)
+], Card.prototype, "type", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "background", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "varchar",
+        length: 100,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "shopName", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "shopNameConfig", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "varchar",
+        length: 250,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "shopLogo", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "shopLogoConfig", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "varchar",
+        length: 130,
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "shopAddress", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "shopAddressConfig", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "varchar",
+        length: 130,
+    }),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "shopDetails", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "shopDetailsConfig", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "jsonb",
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", Object)
+], Card.prototype, "links", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "boolean",
+        default: true,
+    }),
+    tslib_1.__metadata("design:type", Boolean)
+], Card.prototype, "enabled", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "uuid",
+    }),
+    tslib_1.__metadata("design:type", String)
+], Card.prototype, "userId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.id),
+    tslib_1.__metadata("design:type", typeof (_b = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _b : Object)
+], Card.prototype, "user", void 0);
+exports.Card = Card = tslib_1.__decorate([
+    (0, typeorm_1.Entity)()
+], Card);
+
+
+/***/ }),
+/* 18 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CardTypes = exports.CardLinkTypeEnum = void 0;
 var CardLinkTypeEnum;
 (function (CardLinkTypeEnum) {
     CardLinkTypeEnum["Facebook"] = "Facebook";
@@ -388,87 +505,17 @@ var CardLinkTypeEnum;
     CardLinkTypeEnum["Instagram"] = "Instagram";
     CardLinkTypeEnum["Telegram"] = "Telegram";
     CardLinkTypeEnum["Others"] = "Others";
-})(CardLinkTypeEnum || (CardLinkTypeEnum = {}));
+})(CardLinkTypeEnum || (exports.CardLinkTypeEnum = CardLinkTypeEnum = {}));
 var CardTypes;
 (function (CardTypes) {
-    CardTypes["BusinessCard"] = "BusinessCard";
-    CardTypes["ShoppingCard"] = "ShoppingCard";
-    CardTypes["AdvertCard"] = "AdvertCard";
-})(CardTypes || (CardTypes = {}));
-let Card = exports.Card = class Card extends typeorm_1.BaseEntity {
-};
-tslib_1.__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
-    tslib_1.__metadata("design:type", String)
-], Card.prototype, "id", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 10,
-    }),
-    tslib_1.__metadata("design:type", String)
-], Card.prototype, "cardType", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 500,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "shopName", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 130,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "aboutShop", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 500,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "background", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 130,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "shopAddress", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 130,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "logo", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'varchar',
-        length: 1000,
-    }),
-    tslib_1.__metadata("design:type", Object)
-], Card.prototype, "links", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'boolean',
-    }),
-    tslib_1.__metadata("design:type", Boolean)
-], Card.prototype, "enabled", void 0);
-tslib_1.__decorate([
-    (0, typeorm_1.Column)({
-        type: 'uuid',
-    }),
-    tslib_1.__metadata("design:type", String)
-], Card.prototype, "userId", void 0);
-exports.Card = Card = tslib_1.__decorate([
-    (0, typeorm_1.Entity)()
-], Card);
+    CardTypes["BusinessCard"] = "businessCard";
+    CardTypes["ShoppingCard"] = "shoppingCard";
+    CardTypes["AdvertCard"] = "advertCard";
+})(CardTypes || (exports.CardTypes = CardTypes = {}));
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -476,8 +523,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CardModule = void 0;
 const tslib_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(3);
-const card_service_1 = __webpack_require__(19);
-const card_controller_1 = __webpack_require__(21);
+const card_service_1 = __webpack_require__(20);
+const card_controller_1 = __webpack_require__(22);
 const typeorm_1 = __webpack_require__(12);
 const card_entity_1 = __webpack_require__(17);
 let CardModule = exports.CardModule = class CardModule {
@@ -485,15 +532,15 @@ let CardModule = exports.CardModule = class CardModule {
 exports.CardModule = CardModule = tslib_1.__decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([card_entity_1.Card])],
-        providers: [card_service_1.CardService],
         controllers: [card_controller_1.CardController],
+        providers: [card_service_1.CardService],
         exports: [card_service_1.CardService],
     })
 ], CardModule);
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -502,14 +549,13 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CardService = void 0;
 const tslib_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(3);
-const crud_typeorm_1 = __webpack_require__(20);
+const crud_typeorm_1 = __webpack_require__(21);
 const card_entity_1 = __webpack_require__(17);
 const typeorm_1 = __webpack_require__(12);
 const typeorm_2 = __webpack_require__(15);
 let CardService = exports.CardService = class CardService extends crud_typeorm_1.TypeOrmCrudService {
     constructor(cardRepository) {
         super(cardRepository);
-        this.cardRepository = cardRepository;
     }
 };
 exports.CardService = CardService = tslib_1.__decorate([
@@ -520,13 +566,13 @@ exports.CardService = CardService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ ((module) => {
 
 module.exports = require("@dataui/crud-typeorm");
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -535,9 +581,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CardController = void 0;
 const tslib_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(3);
-const card_service_1 = __webpack_require__(19);
-const crud_1 = __webpack_require__(22);
-const card_entity_1 = __webpack_require__(17);
+const card_service_1 = __webpack_require__(20);
+const crud_1 = __webpack_require__(23);
+const create_card_dto_1 = __webpack_require__(24);
+const swagger_1 = __webpack_require__(2);
 let CardController = exports.CardController = class CardController {
     constructor(service) {
         this.service = service;
@@ -546,25 +593,138 @@ let CardController = exports.CardController = class CardController {
 exports.CardController = CardController = tslib_1.__decorate([
     (0, crud_1.Crud)({
         model: {
-            type: card_entity_1.Card,
+            type: create_card_dto_1.CreateCardDto,
         },
-    }),
+    })
+    // @CrudAuth({
+    //   property: "user",
+    //   filter: (user: User) => {
+    //     console.log("Testee user : ", user);
+    //     return { user: user.id };
+    //   },
+    // })
+    ,
+    (0, swagger_1.ApiTags)("Cards"),
     (0, common_1.Controller)({
-        path: 'card',
-        version: '1',
+        path: "card",
+        version: "1",
     }),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof card_service_1.CardService !== "undefined" && card_service_1.CardService) === "function" ? _a : Object])
 ], CardController);
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ ((module) => {
 
 module.exports = require("@dataui/crud");
 
 /***/ }),
-/* 23 */
+/* 24 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateCardDto = void 0;
+const tslib_1 = __webpack_require__(6);
+const class_validator_1 = __webpack_require__(4);
+const class_transformer_1 = __webpack_require__(14);
+const constants_1 = __webpack_require__(18);
+const types_1 = __webpack_require__(25);
+const swagger_1 = __webpack_require__(2);
+class CreateCardDto {
+}
+exports.CreateCardDto = CreateCardDto;
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEnum)(constants_1.CardTypes),
+    (0, swagger_1.ApiProperty)({ enum: constants_1.CardTypes }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof constants_1.CardTypes !== "undefined" && constants_1.CardTypes) === "function" ? _a : Object)
+], CreateCardDto.prototype, "type", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "background", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "nameConfig", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "logoConfig", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "addressConfig", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "details", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsObject)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "detailsConfig", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ValidateNested)({ each: true }),
+    (0, class_validator_1.ArrayMinSize)(2),
+    (0, class_validator_1.ArrayMaxSize)(2),
+    (0, class_transformer_1.Type)(() => types_1.CardLink),
+    tslib_1.__metadata("design:type", typeof (_b = typeof types_1.CardLink !== "undefined" && types_1.CardLink) === "function" ? _b : Object)
+], CreateCardDto.prototype, "links", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsOptional)(),
+    tslib_1.__metadata("design:type", Object)
+], CreateCardDto.prototype, "enabled", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    tslib_1.__metadata("design:type", Array)
+], CreateCardDto.prototype, "userId", void 0);
+
+
+/***/ }),
+/* 25 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CardLink = void 0;
+const tslib_1 = __webpack_require__(6);
+const class_validator_1 = __webpack_require__(4);
+const constants_1 = __webpack_require__(18);
+class CardLink {
+}
+exports.CardLink = CardLink;
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    tslib_1.__metadata("design:type", Number)
+], CardLink.prototype, "backgroundOpacity", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    tslib_1.__metadata("design:type", String)
+], CardLink.prototype, "link", void 0);
+tslib_1.__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEnum)(constants_1.CardLinkTypeEnum, { message: "Invalid card type" }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof constants_1.CardLinkTypeEnum !== "undefined" && constants_1.CardLinkTypeEnum) === "function" ? _a : Object)
+], CardLink.prototype, "type", void 0);
+
+
+/***/ }),
+/* 26 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -572,12 +732,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserModule = void 0;
 const tslib_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(3);
-const user_service_1 = __webpack_require__(24);
-const user_controller_1 = __webpack_require__(25);
+const user_service_1 = __webpack_require__(27);
+const user_controller_1 = __webpack_require__(28);
 const typeorm_1 = __webpack_require__(12);
 const user_entity_1 = __webpack_require__(13);
-const email_not_regsitered_rule_1 = __webpack_require__(27);
-const duplicatePhoneNumber_validation_1 = __webpack_require__(28);
+const email_not_regsitered_rule_1 = __webpack_require__(30);
+const duplicatePhoneNumber_validation_1 = __webpack_require__(31);
 let UserModule = exports.UserModule = class UserModule {
 };
 exports.UserModule = UserModule = tslib_1.__decorate([
@@ -591,7 +751,7 @@ exports.UserModule = UserModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -683,7 +843,7 @@ exports.UserService = UserService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -692,10 +852,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UserController = void 0;
 const tslib_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(3);
-const user_service_1 = __webpack_require__(24);
-const create_user_dto_1 = __webpack_require__(26);
-const user_interceptor_1 = __webpack_require__(29);
-const Login_user_dto_1 = __webpack_require__(30);
+const user_service_1 = __webpack_require__(27);
+const create_user_dto_1 = __webpack_require__(29);
+const user_interceptor_1 = __webpack_require__(32);
+const Login_user_dto_1 = __webpack_require__(33);
 // @Crud({
 //   model: {
 //     type: User,
@@ -773,7 +933,7 @@ exports.UserController = UserController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -782,9 +942,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CreateUserDto = void 0;
 const tslib_1 = __webpack_require__(6);
 const class_validator_1 = __webpack_require__(4);
-const email_not_regsitered_rule_1 = __webpack_require__(27);
+const email_not_regsitered_rule_1 = __webpack_require__(30);
 const class_transformer_1 = __webpack_require__(14);
-const duplicatePhoneNumber_validation_1 = __webpack_require__(28);
+const duplicatePhoneNumber_validation_1 = __webpack_require__(31);
 const users_constants_1 = __webpack_require__(16);
 class CreateUserDto {
 }
@@ -884,7 +1044,7 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -893,7 +1053,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.EmailExist = void 0;
 const tslib_1 = __webpack_require__(6);
 const class_validator_1 = __webpack_require__(4);
-const user_service_1 = __webpack_require__(24);
+const user_service_1 = __webpack_require__(27);
 let EmailExist = exports.EmailExist = class EmailExist {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -933,7 +1093,7 @@ exports.EmailExist = EmailExist = tslib_1.__decorate([
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -942,7 +1102,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.PhoneNumberExist = void 0;
 const tslib_1 = __webpack_require__(6);
 const class_validator_1 = __webpack_require__(4);
-const user_service_1 = __webpack_require__(24);
+const user_service_1 = __webpack_require__(27);
 let PhoneNumberExist = exports.PhoneNumberExist = class PhoneNumberExist {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -975,7 +1135,7 @@ exports.PhoneNumberExist = PhoneNumberExist = tslib_1.__decorate([
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -998,7 +1158,7 @@ exports.UserInterceptor = UserInterceptor;
 
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1027,6 +1187,203 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", String)
 ], LoginUserDto.prototype, "userIP", void 0);
 
+
+/***/ }),
+/* 34 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthModule = void 0;
+const tslib_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(3);
+const auth_service_1 = __webpack_require__(35);
+const auth_controller_1 = __webpack_require__(37);
+const user_module_1 = __webpack_require__(26);
+const passport_1 = __webpack_require__(38);
+const jwt_1 = __webpack_require__(36);
+const local_auth_strategy_1 = __webpack_require__(39);
+const jwt_auth_strategy_1 = __webpack_require__(41);
+let AuthModule = exports.AuthModule = class AuthModule {
+};
+exports.AuthModule = AuthModule = tslib_1.__decorate([
+    (0, common_1.Module)({
+        imports: [
+            user_module_1.UserModule,
+            passport_1.PassportModule,
+            jwt_1.JwtModule.register({
+                secret: "SECRET_KEY",
+                signOptions: { expiresIn: "60s" },
+            }),
+        ],
+        providers: [auth_service_1.AuthService, local_auth_strategy_1.LocalStrategy, jwt_auth_strategy_1.JwtStrategy],
+        controllers: [auth_controller_1.AuthController],
+        exports: [auth_service_1.AuthService],
+    })
+], AuthModule);
+
+
+/***/ }),
+/* 35 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthService = void 0;
+const tslib_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(3);
+const user_service_1 = __webpack_require__(27);
+const jwt_1 = __webpack_require__(36);
+let AuthService = exports.AuthService = class AuthService {
+    constructor(usersService, jwtService) {
+        this.usersService = usersService;
+        this.jwtService = jwtService;
+    }
+    async validateUserCredentials(userAuth) {
+        return await this.usersService.loginUser(userAuth);
+    }
+    async loginWtihCredentials(userAuth) {
+        const payload = { email: userAuth.email };
+        const validate = await this.validateUserCredentials(userAuth);
+        if (!validate) {
+            throw new common_1.UnauthorizedException({
+                status: false,
+                message: "User doesn't exist",
+            });
+        }
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
+    }
+};
+exports.AuthService = AuthService = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof user_service_1.UserService !== "undefined" && user_service_1.UserService) === "function" ? _a : Object, typeof (_b = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _b : Object])
+], AuthService);
+
+
+/***/ }),
+/* 36 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/jwt");
+
+/***/ }),
+/* 37 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthController = void 0;
+const tslib_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(3);
+const auth_service_1 = __webpack_require__(35);
+let AuthController = exports.AuthController = class AuthController {
+    constructor(authService) {
+        this.authService = authService;
+    }
+    // @UseGuards(AuthGuard("local"))
+    async loginUser(req) {
+        return this.authService.loginWtihCredentials(req);
+    }
+};
+tslib_1.__decorate([
+    (0, common_1.Post)(),
+    tslib_1.__param(0, (0, common_1.Request)()),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], AuthController.prototype, "loginUser", null);
+exports.AuthController = AuthController = tslib_1.__decorate([
+    (0, common_1.Controller)({
+        path: "auth",
+        version: "1",
+    }),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof auth_service_1.AuthService !== "undefined" && auth_service_1.AuthService) === "function" ? _a : Object])
+], AuthController);
+
+
+/***/ }),
+/* 38 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/passport");
+
+/***/ }),
+/* 39 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LocalStrategy = void 0;
+const tslib_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(3);
+const auth_service_1 = __webpack_require__(35);
+const passport_1 = __webpack_require__(38);
+const passport_local_1 = __webpack_require__(40);
+let LocalStrategy = exports.LocalStrategy = class LocalStrategy extends (0, passport_1.PassportStrategy)(passport_local_1.Strategy) {
+    constructor(authService) {
+        super();
+        this.authService = authService;
+    }
+    async validate(userAuth) {
+        const user = await this.authService.validateUserCredentials(userAuth);
+        if (!user) {
+            throw new common_1.UnauthorizedException();
+        }
+        return user;
+    }
+};
+exports.LocalStrategy = LocalStrategy = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof auth_service_1.AuthService !== "undefined" && auth_service_1.AuthService) === "function" ? _a : Object])
+], LocalStrategy);
+
+
+/***/ }),
+/* 40 */
+/***/ ((module) => {
+
+module.exports = require("passport-local");
+
+/***/ }),
+/* 41 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.JwtStrategy = void 0;
+const tslib_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(3);
+const passport_1 = __webpack_require__(38);
+const passport_jwt_1 = __webpack_require__(42);
+let JwtStrategy = exports.JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
+    constructor() {
+        super({
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: "SECRET_KEY",
+        });
+    }
+    async validate(payload) {
+        return { email: payload.email };
+    }
+};
+exports.JwtStrategy = JwtStrategy = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [])
+], JwtStrategy);
+
+
+/***/ }),
+/* 42 */
+/***/ ((module) => {
+
+module.exports = require("passport-jwt");
 
 /***/ })
 /******/ 	]);
@@ -1072,18 +1429,18 @@ async function bootstrap() {
     app.useGlobalPipes(new common_1.ValidationPipe({ whitelist: true, transform: true }));
     (0, class_validator_1.useContainer)(app.select(app_module_1.AppModule), { fallbackOnErrors: true });
     app.useGlobalInterceptors(app.get(core_1.Reflector));
-    app.setGlobalPrefix('api');
+    app.setGlobalPrefix("api");
     app.enableVersioning({
         type: common_1.VersioningType.URI,
     });
     const config = new swagger_1.DocumentBuilder()
-        .setTitle('Api Documentation')
-        .setDescription('Api documentation description')
-        .setVersion('1.0')
-        .addTag('AppBackend')
+        .setTitle("Api Documentation")
+        .setDescription("Api documentation description")
+        .setVersion("1.0")
+        .addTag("AppBackend")
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
-    swagger_1.SwaggerModule.setup('api/docs', app, document);
+    swagger_1.SwaggerModule.setup("v1/api/docs/", app, document);
     await app.listen(4000);
 }
 bootstrap();
