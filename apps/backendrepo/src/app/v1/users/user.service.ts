@@ -1,20 +1,16 @@
-import { Injectable, ServiceUnavailableException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { User } from "./entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { TypeOrmCrudService } from "@dataui/crud-typeorm";
-import bcrypt from "bcrypt";
-import { LoginUserDto } from "./dto/Login-user.dto";
+import * as Bcrypt from "bcrypt";
+import { saltForBcryptHashing } from "../utils/users/password";
 
 @Injectable()
-// export class UserService extends TypeOrmCrudService<User> {
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>
-  ) {
-    // super(userRepository)
-  }
+  ) {}
 
   async findOneByEmail(email: string): Promise<User> {
     if (!email) {
@@ -41,8 +37,16 @@ export class UserService {
   }
 
   async registerUser(user: CreateUserDto): Promise<boolean> {
+    //hash the password
+    const hashedPassword = await Bcrypt.hash(
+      user.password,
+      saltForBcryptHashing
+    );
+
     const newUser = {
       ...user,
+      password: hashedPassword,
+      registrationDevice: user.userDevice,
       registrationIpAddress: user.userIP,
     };
     const addUser = this.userRepository.create(newUser);
@@ -52,17 +56,6 @@ export class UserService {
     } else {
       return false;
     }
-  }
-
-  async loginUser(user: LoginUserDto): Promise<Partial<User | null>> {
-    const checkUser = this.userRepository.findOne({
-      where: {
-        email: user.email,
-        password: user.password,
-      },
-    });
-
-    return checkUser;
   }
 
   // async findMany(): Promise<User[]> {

@@ -10,7 +10,6 @@ export class PhoneNumberExist implements ValidatorConstraintInterface {
 
   async validate(phoneNumber: string) {
     if (!this.userRepository) return false;
-    console.log("Testee I ran!!");
     if (phoneNumber && phoneNumber.length > 8) {
       const user = await this.userRepository.findOneByPhoneNumber(phoneNumber);
       if (user) {

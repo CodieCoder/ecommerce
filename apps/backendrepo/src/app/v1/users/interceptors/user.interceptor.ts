@@ -3,9 +3,9 @@ import {
   CallHandler,
   ExecutionContext,
   NestInterceptor,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { CreateUserDto } from '../dto/create-user.dto';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { CreateUserDto } from "../dto/create-user.dto";
 
 export class UserInterceptor implements NestInterceptor {
   intercept(
@@ -14,9 +14,11 @@ export class UserInterceptor implements NestInterceptor {
   ): Observable<CreateUserDto> {
     const req = context.switchToHttp().getRequest();
     if (!req.body) {
-      throw new BadRequestException('Invalid request.');
+      throw new BadRequestException("Invalid request.");
     } else {
-      req.body['userIP'] = req.connection.remoteAddress;
+      //add extra info to the user object obtained from Local Strategy (Passport)
+      req.user["userIP"] = req.connection.remoteAddress;
+      req.user["userDevice"] = req.body.userDevice;
       return next.handle();
     }
   }

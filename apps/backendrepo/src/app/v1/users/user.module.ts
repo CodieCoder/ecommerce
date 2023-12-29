@@ -5,10 +5,12 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { EmailExist } from "./validations/email-not-regsitered-rule";
 import { PhoneNumberExist } from "./validations/duplicatePhoneNumber.validation";
+import { AuthService } from "./auth/auth.service";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
-  providers: [UserService, EmailExist, PhoneNumberExist],
+  imports: [TypeOrmModule.forFeature([User]), JwtModule],
+  providers: [UserService, EmailExist, PhoneNumberExist, AuthService],
   controllers: [UserController],
   exports: [UserService],
 })

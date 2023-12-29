@@ -3,53 +3,33 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Post,
+  Request,
   ServiceUnavailableException,
-  UnauthorizedException,
+  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserInterceptor } from "./interceptors/user.interceptor";
-import { LoginUserDto } from "./dto/Login-user.dto";
+import { Public } from "./auth/public.auth";
+import { LocalAuthGuard } from "./auth/guard/local.auth.guard";
+import { AuthService } from "./auth/auth.service";
+import { Request as ExpressRequest } from "express";
 
-// @Crud({
-//   model: {
-//     type: User,
-//   },
-//   // dto: {
-//   //   create: CreateUserDto,
-//   // },
-// })
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
   path: "user",
   version: "1",
 })
-
-// export class UserController implements CrudController<User> {
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: AuthService
+  ) {}
 
-  // get base(): CrudController<User> {
-  //   return this;
-  // }
-
-  // @Override()
-  // createOne(
-  //   @Request() requestObject: ExpressRequest,
-  //   @ParsedRequest() req: CrudRequest,
-  //   @ParsedBody() dto: CreateUserDto
-  // ) {
-  //   console.log("Testee requestObject: ", dto);
-  //   // console.log("Testee requestObject: ", requestObject.ip);
-  //   return this.base.createOneBase(req, {
-  //     ...dto,
-  //     registrationIpAddress: requestObject.ip,
-  //   } as any);
-  // }
-
+  @Public()
   @Post("signup")
-  @UseInterceptors(UserInterceptor)
+  // @UseInterceptors(UserInterceptor)
   async signUp(@Body() user: CreateUserDto): Promise<string> {
     const didCreate = await this.userService.registerUser(user);
     if (didCreate) {
@@ -59,15 +39,11 @@ export class UserController {
     }
   }
 
-  @Post("signin")
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  @Post("login")
   @UseInterceptors(UserInterceptor)
-  async login(@Body() user: LoginUserDto) {
-    console.log("Testee login controller : ", user);
-    const checkUser = await this.userService.loginUser(user);
-    if (checkUser) {
-      return checkUser;
-    } else {
-      throw new UnauthorizedException("Invalid email and/or password.");
-    }
+  async login(@Request() req: any) {
+    return this.authService.login(req.user);
   }
 }
