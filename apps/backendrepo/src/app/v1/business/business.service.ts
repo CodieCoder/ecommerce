@@ -34,6 +34,7 @@ export class BusinessService extends TypeOrmCrudService<Business> {
         branchId: branch.id,
         businessId: business.id,
       };
+
       const card = AddCardToBusiness(cardParams);
       dto.branches[0].card = card as any;
 
