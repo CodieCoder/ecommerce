@@ -3,7 +3,16 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import configurations from "../config/db.config";
 import { User } from "../users/entities/user.entity";
-import { Card } from "../cards/entities/card.entity";
+import { BusinessCard } from "../business/entities/business-card.entity";
+import { Business } from "../business/entities/business.entity";
+import { BusinessLocation } from "../business/entities/business-location.entity";
+import { BusinessBranch } from "../business/entities/business-branch.entity";
+import { Admin } from "../admin/entities/admin-entity";
+import { AdminType } from "../admin/entities/type-admin.entity";
+import { BusinessCategory } from "../business/entities/business-category.entity";
+import { BusinessToCategory } from "../business/entities/business-to-category";
+import { Telephone } from "../business/entities/telephone.entity";
+import { BusinessPosition } from "../business/entities/business-position.entity";
 
 @Module({
   imports: [
@@ -23,7 +32,19 @@ import { Card } from "../cards/entities/card.entity";
         password: configService.get<any>("database.password"),
         username: configService.get<any>("database.username"),
         // entities: [__dirname + '/../**/*.entity.ts'],
-        entities: [User, Card],
+        entities: [
+          User,
+          BusinessCard,
+          Business,
+          BusinessCategory,
+          BusinessToCategory,
+          Admin,
+          AdminType,
+          BusinessLocation,
+          Telephone,
+          BusinessBranch,
+          BusinessPosition,
+        ],
         database: "appdb",
         synchronize: true,
         // logging: true,

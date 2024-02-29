@@ -1,19 +1,13 @@
 import { Exclude } from "class-transformer";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { AccountTypesEnum } from "../../constants/users.constants";
-import { Card } from "../../cards/entities/card.entity";
+import { BaseEntity } from "../../common/entities/base.entity";
+import { Business } from "../../business/entities/business.entity";
+import { Admin } from "../../admin/entities/admin-entity";
+import { BusinessPosition } from "../../business/entities/business-position.entity";
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
   @Column({
     type: "varchar",
     length: 55,
@@ -119,7 +113,19 @@ export class User extends BaseEntity {
     default: 0,
   })
   verificationLevel: number;
-}
 
-// @OneToMany(() => Card, (card) => card.user)
-// card: Card;
+  @OneToMany(() => Admin, (admin) => admin.user)
+  admin: Admin[];
+
+  @OneToMany(() => Business, (business) => business.user)
+  businesses: Business[];
+
+  @Column({ type: "uuid", nullable: true })
+  businessPositionId: string;
+
+  @ManyToOne(
+    () => BusinessPosition,
+    (businessPosition) => businessPosition.users
+  )
+  businessPosition: BusinessPosition;
+}

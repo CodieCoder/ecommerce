@@ -36,6 +36,18 @@ export class UserService {
     }
   }
 
+  async findOneById(userId: string): Promise<User> {
+    if (!userId) {
+      return null;
+    } else {
+      return await this.userRepository.findOne({
+        where: {
+          id: userId,
+        },
+      });
+    }
+  }
+
   async registerUser(user: CreateUserDto): Promise<boolean> {
     //hash the password
     const hashedPassword = await Bcrypt.hash(

@@ -11,10 +11,9 @@ import {
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UserInterceptor } from "./interceptors/user.interceptor";
-import { Public } from "./auth/public.auth";
-import { LocalAuthGuard } from "./auth/guard/local.auth.guard";
-import { AuthService } from "./auth/auth.service";
-import { Request as ExpressRequest } from "express";
+import { Public } from "../auth/public.auth";
+import { LocalAuthGuard } from "../auth/guard/local.auth.guard";
+import { AuthService } from "../auth/auth.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller({
@@ -29,8 +28,9 @@ export class UserController {
 
   @Public()
   @Post("signup")
-  // @UseInterceptors(UserInterceptor)
+  @UseInterceptors(UserInterceptor)
   async signUp(@Body() user: CreateUserDto): Promise<string> {
+    console.log("Testee user : ", user);
     const didCreate = await this.userService.registerUser(user);
     if (didCreate) {
       return "success";

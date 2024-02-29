@@ -1,3 +1,8 @@
 node_modules 
 dist
+dist*
 .todo
+
+.env
+.env.development
+.env*

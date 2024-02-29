@@ -17,8 +17,17 @@ export class UserInterceptor implements NestInterceptor {
       throw new BadRequestException("Invalid request.");
     } else {
       //add extra info to the user object obtained from Local Strategy (Passport)
-      req.user["userIP"] = req.connection.remoteAddress;
-      req.user["userDevice"] = req.body.userDevice;
+      if (req.user) {
+        req.user["userIP"] = req.connection.remoteAddress;
+        req.user["userDevice"] = req.headers["user-agent"];
+        //add userId to the body (if there is a body in the request)
+        if (req.body) {
+          req.body["userId"] = req.user.userId;
+        }
+      } else {
+        req.body["userIP"] = req.connection.remoteAddress;
+        req.body["userDevice"] = req.headers["user-agent"];
+      }
       return next.handle();
     }
   }

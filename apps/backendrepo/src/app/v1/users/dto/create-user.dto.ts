@@ -90,7 +90,7 @@ export class CreateUserDto {
   @IsOptional()
   postalCode: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(AccountTypesEnum, { message: "Invalid account type" })
   accountType: AccountTypesEnum;
 
