@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { TypeOrmCrudService } from "@dataui/crud-typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BusinessCategory } from "../entities/business-category.entity";
+import { BusinessCategory } from "../../entities/business-category.entity";
 
 @Injectable()
 export class BusinessCategoryService extends TypeOrmCrudService<BusinessCategory> {

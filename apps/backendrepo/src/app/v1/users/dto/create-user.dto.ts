@@ -14,9 +14,9 @@ import {
   MinLength,
   Validate,
 } from "class-validator";
-import { EmailExist } from "../validations/email-not-regsitered-rule";
+import { EmailExist } from "../../validations/user/email-not-regsitered-rule";
 import { Type } from "class-transformer";
-import { PhoneNumberExist } from "../validations/duplicatePhoneNumber.validation";
+import { PhoneNumberExist } from "../../validations/user/duplicatePhoneNumber.validation";
 import { AccountTypesEnum, GenderEnum } from "../../constants/users.constants";
 
 export class CreateUserDto {

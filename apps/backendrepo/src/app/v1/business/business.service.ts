@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { TypeOrmCrudService } from "@dataui/crud-typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeepPartial, Repository } from "typeorm";
-import { Business } from "./entities/business.entity";
+import { Business } from "../entities/business.entity";
 import { CrudRequest } from "@dataui/crud";
-import { BusinessBranch } from "./entities/business-branch.entity";
+import { BusinessBranch } from "../entities/business-branch.entity";
 import AddCardToBusiness from "./utils/addDetailsbusinessCreate";
 
 @Injectable()
@@ -35,7 +35,8 @@ export class BusinessService extends TypeOrmCrudService<Business> {
         businessId: business.id,
       };
 
-      const card = AddCardToBusiness(cardParams);
+      const cardLogo = business.logo; //add business logo as card's logo if available
+      const card = AddCardToBusiness({ ...cardParams, logo: cardLogo });
       dto.branches[0].card = card as any;
 
       await this.businessBranch.save({

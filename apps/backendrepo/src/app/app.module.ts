@@ -11,6 +11,9 @@ import { JwtAuthGuard } from "./v1/auth/guard/jwt.auth.guard";
 import jwtConfig from "./v1/config/jwt.config";
 import { BusinessModule } from "./v1/business/business.module";
 import { AdminModule } from "./v1/admin/admin.module";
+import { NestjsFormDataModule } from "nestjs-form-data";
+import { FormDataConfigService } from "./v1/lib/formData";
+import { PublicFileDownloadController } from "./v1/public/file/file-download.controller";
 
 @Module({
   imports: [
@@ -19,13 +22,16 @@ import { AdminModule } from "./v1/admin/admin.module";
       isGlobal: true,
       load: [databaseConfig, jwtConfig],
     }),
+    NestjsFormDataModule.configAsync({
+      useClass: FormDataConfigService,
+    }),
     DatabaseModule,
     UserModule,
     BusinessModule,
     AdminModule,
     AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, PublicFileDownloadController],
   providers: [
     {
       provide: APP_GUARD,

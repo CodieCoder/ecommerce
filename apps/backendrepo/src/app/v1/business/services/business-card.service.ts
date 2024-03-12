@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { TypeOrmCrudService } from "@dataui/crud-typeorm";
-import { BusinessCard } from "../entities/business-card.entity";
+import { BusinessCard } from "../../entities/business-card.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 

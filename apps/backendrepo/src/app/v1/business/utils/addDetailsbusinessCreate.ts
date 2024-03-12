@@ -1,4 +1,5 @@
 import { ICreateCard } from "../../types/business/card";
+import { ICloudFile } from "../../types/cloudFile.type";
 
 interface IProps {
   shopName: string;
@@ -6,6 +7,7 @@ interface IProps {
   details: string;
   branchId?: string;
   businessId?: string;
+  logo?: ICloudFile;
 }
 
 const AddCardToBusiness = ({
@@ -14,6 +16,7 @@ const AddCardToBusiness = ({
   details,
   branchId,
   businessId,
+  logo,
 }: IProps) => {
   const dataToAdd: ICreateCard = {
     businessId,
@@ -21,9 +24,8 @@ const AddCardToBusiness = ({
     shopName,
     address,
     details,
-    background: {
-      color: "rgb(0, 0, 0)",
-    },
+    backgroundColor: "rgb(0, 0, 0)",
+
     backgroundOverlay: "rgba(0,0,0, 0.5)",
     nameConfig: {
       isBold: false,
@@ -48,6 +50,7 @@ const AddCardToBusiness = ({
       borderWidth: 0,
       hide: true,
     },
+    logo: logo ?? null,
   };
 
   return dataToAdd;

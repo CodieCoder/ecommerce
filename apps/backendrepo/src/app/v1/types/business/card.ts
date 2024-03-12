@@ -1,7 +1,4 @@
-export interface IBackground {
-  color: string | undefined;
-  image?: FileList;
-}
+import { ICloudFile } from "../cloudFile.type";
 
 export interface IShopNameConfig {
   isBold?: boolean;
@@ -25,11 +22,12 @@ export interface IShopAddressBackground {
 }
 
 export interface ICreateCard {
-  background: IBackground;
+  backgroundColor: string;
+  backgroundImage?: ICloudFile;
   backgroundOverlay: string | undefined;
   shopName: string | undefined;
   nameConfig: IShopNameConfig;
-  logo?: File | undefined;
+  logo?: ICloudFile;
   logoConfig: IShopLogo;
   details: string;
   detailsConfig: IShopAddressBackground;

@@ -2,9 +2,9 @@ import { Controller, UseInterceptors } from "@nestjs/common";
 import { Crud, CrudController } from "@dataui/crud";
 import { ApiTags } from "@nestjs/swagger";
 import { UserInterceptor } from "../../users/interceptors/user.interceptor";
-import { BusinessCategory } from "../entities/business-category.entity";
+import { BusinessCategory } from "../../entities/business-category.entity";
 import { BusinessCategoryService } from "../services/business-category.service";
-import { CreateBusinessCategoryDto } from "../dto/create-business-category";
+import { CreateBusinessCategoryDto } from "../dto/create-business-category.dto";
 
 @Crud({
   model: {

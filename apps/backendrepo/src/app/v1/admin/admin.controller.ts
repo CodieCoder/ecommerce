@@ -3,7 +3,7 @@ import { Crud, CrudController } from "@dataui/crud";
 import { ApiTags } from "@nestjs/swagger";
 import { UserInterceptor } from "../users/interceptors/user.interceptor";
 import { AdminService } from "./admin.service";
-import { Admin } from "./entities/admin-entity";
+import { Admin } from "../entities/admin-entity";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 
 @Crud({

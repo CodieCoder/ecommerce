@@ -7,17 +7,16 @@ import {
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import {
-  IBackground,
   IShopAddressBackground,
   IShopLogo,
   IShopNameConfig,
 } from "../../types/business/card";
+import { ICloudFile } from "../../types/cloudFile.type";
 
 export class UpdateCardDto {
   @ApiProperty()
   @IsNotEmpty()
-  // @IsObject()
-  background: IBackground;
+  backgroundColor: string;
 
   @ApiProperty()
   @IsOptional()
@@ -31,8 +30,13 @@ export class UpdateCardDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsString()
-  logo: string;
+  @IsObject()
+  logo: ICloudFile;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsObject()
+  backgroundImage: ICloudFile;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -58,4 +62,8 @@ export class UpdateCardDto {
   @IsOptional()
   @IsString()
   qrCodeBackground: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  branchId: string;
 }

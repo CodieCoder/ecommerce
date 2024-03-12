@@ -20,3 +20,10 @@ export interface IJwtPayload {
   extra: string;
   info: string;
 }
+
+export interface IJwtAuth {
+  userId: string;
+  email: string;
+  userIP: string;
+  userDevice: string;
+}

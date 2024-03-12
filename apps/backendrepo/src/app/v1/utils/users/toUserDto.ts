@@ -1,5 +1,5 @@
 import { UserDto } from "../../users/dto/user.dto";
-import { User } from "../../users/entities/user.entity";
+import { User } from "../../entities/user.entity";
 
 /**
  *@description a helper function to extract relevant user data from User object

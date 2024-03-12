@@ -2,17 +2,25 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import configurations from "../config/db.config";
-import { User } from "../users/entities/user.entity";
-import { BusinessCard } from "../business/entities/business-card.entity";
-import { Business } from "../business/entities/business.entity";
-import { BusinessLocation } from "../business/entities/business-location.entity";
-import { BusinessBranch } from "../business/entities/business-branch.entity";
-import { Admin } from "../admin/entities/admin-entity";
-import { AdminType } from "../admin/entities/type-admin.entity";
-import { BusinessCategory } from "../business/entities/business-category.entity";
-import { BusinessToCategory } from "../business/entities/business-to-category";
-import { Telephone } from "../business/entities/telephone.entity";
-import { BusinessPosition } from "../business/entities/business-position.entity";
+import { User } from "../entities/user.entity";
+import { BusinessCard } from "../entities/business-card.entity";
+import { Business } from "../entities/business.entity";
+import { BusinessLocation } from "../entities/business-location.entity";
+import { BusinessBranch } from "../entities/business-branch.entity";
+import { Admin } from "../entities/admin-entity";
+import { AdminType } from "../entities/type-admin.entity";
+import { BusinessCategory } from "../entities/business-category.entity";
+import { BusinessToCategory } from "../entities/business-to-category";
+import { Telephone } from "../entities/telephone.entity";
+import { BusinessPosition } from "../entities/business-position.entity";
+import { Product } from "../entities/product.entity";
+import { ProductSubCategory } from "../entities/product-subCategory.entity";
+import { ProductBrand } from "../entities/product-brand.entity";
+import { ProductDiscount } from "../entities/product-discount.entity";
+import { ProductInventory } from "../entities/product-inventory.entity";
+import { BrandToCategory } from "../entities/brand-to-category.entity";
+import { BrandToSubCategory } from "../entities/brand-to-subCategory.entity";
+import { CloudFiles } from "../entities/cloud-files.entity";
 
 @Module({
   imports: [
@@ -31,19 +39,27 @@ import { BusinessPosition } from "../business/entities/business-position.entity"
         port: configService.get<number>("database.port"),
         password: configService.get<any>("database.password"),
         username: configService.get<any>("database.username"),
-        // entities: [__dirname + '/../**/*.entity.ts'],
+        // entities: [join(__dirname, "**", "*.entity.{ts,js}")],
         entities: [
           User,
           BusinessCard,
           Business,
           BusinessCategory,
-          BusinessToCategory,
           Admin,
           AdminType,
           BusinessLocation,
           Telephone,
           BusinessBranch,
           BusinessPosition,
+          Product,
+          ProductSubCategory,
+          ProductBrand,
+          ProductDiscount,
+          ProductInventory,
+          BusinessToCategory,
+          BrandToCategory,
+          BrandToSubCategory,
+          CloudFiles,
         ],
         database: "appdb",
         synchronize: true,

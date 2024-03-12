@@ -6,13 +6,14 @@ import {
   IsUUID,
   Validate,
 } from "class-validator";
-import { BusinessNameExist } from "../../validations/business/businessNameExist";
+import { BusinessNameExist } from "../../validations/business/businessNameExist.validation";
 import {
   IAddAdminPrivilegesForm,
   IAdminCreate,
 } from "../../types/business/admin";
 import { ICreateCard } from "../../types/business/card";
 import { ICreateBusinessBranch } from "../../types/business";
+import { ICloudFile } from "../../types/cloudFile.type";
 
 export class CreateBusinessDto {
   @ApiProperty({
@@ -43,7 +44,7 @@ export class CreateBusinessDto {
     type: String,
   })
   @IsOptional()
-  logo: string;
+  logo: ICloudFile;
 
   @ApiProperty({
     required: true,
