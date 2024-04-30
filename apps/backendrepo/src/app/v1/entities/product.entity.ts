@@ -3,6 +3,7 @@ import { BaseEntity } from "./base.entity";
 import { ProductInventory } from "./product-inventory.entity";
 import { ProductBrand } from "./product-brand.entity";
 import { ProductSubCategory } from "./product-subCategory.entity";
+import { ProductDiscount } from "./product-discount.entity";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -50,4 +51,7 @@ export class Product extends BaseEntity {
   })
   @JoinColumn({ name: "subCategoryId" })
   subCategory: ProductSubCategory;
+
+  @ManyToOne(() => ProductDiscount, (discount) => discount.products)
+  discount: ProductDiscount;
 }

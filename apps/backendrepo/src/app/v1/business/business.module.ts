@@ -31,9 +31,11 @@ import { BrandToCategory } from "../entities/brand-to-category.entity";
 import { BrandToSubCategory } from "../entities/brand-to-subCategory.entity";
 import { NestjsFormDataModule } from "nestjs-form-data";
 import { FormDataConfigService } from "../lib/formData";
-import { AppWriteStorageService } from "../lib/appwrite/storage";
-import { ConfigService } from "@nestjs/config";
 import { BusinessCategoryExist } from "../validations/business/businessCategoryExist.validation";
+import { ProductDiscountService } from "./services/product/product-discount.service";
+import { ProductDiscount } from "../entities/product-discount.entity";
+import { ProductDiscountController } from "./controllers/product/product-discount.controller";
+import { ProductDiscountExist } from "../validations/product/product-discountNameExist.validation";
 
 @Module({
   imports: [
@@ -52,6 +54,7 @@ import { BusinessCategoryExist } from "../validations/business/businessCategoryE
       ProductBrand,
       BrandToCategory,
       BrandToSubCategory,
+      ProductDiscount,
     ]),
     NestjsFormDataModule.configAsync({
       useClass: FormDataConfigService,
@@ -64,6 +67,7 @@ import { BusinessCategoryExist } from "../validations/business/businessCategoryE
     ProductSubCategoryController,
     ProductController,
     ProductBrandController,
+    ProductDiscountController,
   ],
   providers: [
     BusinessService,
@@ -75,7 +79,9 @@ import { BusinessCategoryExist } from "../validations/business/businessCategoryE
     ProductSubCategoryService,
     ProductService,
     ProductBrandService,
+    ProductDiscountService,
     BusinessCategoryExist,
+    ProductDiscountExist,
   ],
   exports: [
     BusinessService,
@@ -85,6 +91,7 @@ import { BusinessCategoryExist } from "../validations/business/businessCategoryE
     ProductSubCategoryService,
     ProductService,
     ProductBrandService,
+    ProductDiscountService,
   ],
 })
 export class BusinessModule {}

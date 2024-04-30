@@ -1,41 +1,41 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 export class BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @CreateDateColumn({
-    type: "timestamptz",
+    type: 'timestamptz',
     nullable: true,
   })
   createdAt?: Date;
 
   @Column({
-    type: "varchar",
+    type: 'varchar',
     nullable: true,
   })
   createdBy?: string;
 
   @CreateDateColumn({
-    type: "timestamptz",
+    type: 'timestamptz',
     nullable: true,
   })
   updatedAt?: Date;
 
   @Column({
-    type: "varchar",
+    type: 'varchar',
     nullable: true,
   })
   updatedBy?: string;
 
   @Column({
-    type: "timestamptz",
+    type: 'timestamptz',
     nullable: true,
   })
   deletedAt?: Date;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     default: true,
     nullable: true,
   })

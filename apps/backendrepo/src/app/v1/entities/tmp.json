@@ -1,0 +1,30 @@
+{
+    "background": {
+        "color": "rgb(2, 132, 199)"
+    },
+    "backgroundOverlay": "rgba(0,0,0, 0.5)",
+    "nameConfig": {
+        "isBold": false,
+        "color": "rgb(255, 255, 255)"
+    },
+    "logoConfig": {
+        "rounded": 100,
+        "size": 3.6,
+        "opacity": 1,
+        "borderType": "solid",
+        "borderWidth": 4.6,
+        "borderColor": "rgba(255, 255, 255, 0.3)"
+    },
+    "detailsConfig": {
+        "color": "rgb(255, 255, 255)",
+        "opacity": 0.42,
+        "borderWidth": 0
+    },
+    "addressConfig": {
+        "color": "rgb(255, 255, 255)",
+        "opacity": 0.56,
+        "borderWidth": 0,
+        "hide": false
+    },
+    "details": "New About"
+}

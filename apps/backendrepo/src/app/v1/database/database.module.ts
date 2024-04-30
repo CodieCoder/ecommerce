@@ -1,45 +1,56 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import configurations from "../config/db.config";
-import { User } from "../entities/user.entity";
-import { BusinessCard } from "../entities/business-card.entity";
-import { Business } from "../entities/business.entity";
-import { BusinessLocation } from "../entities/business-location.entity";
-import { BusinessBranch } from "../entities/business-branch.entity";
-import { Admin } from "../entities/admin-entity";
-import { AdminType } from "../entities/type-admin.entity";
-import { BusinessCategory } from "../entities/business-category.entity";
-import { BusinessToCategory } from "../entities/business-to-category";
-import { Telephone } from "../entities/telephone.entity";
-import { BusinessPosition } from "../entities/business-position.entity";
-import { Product } from "../entities/product.entity";
-import { ProductSubCategory } from "../entities/product-subCategory.entity";
-import { ProductBrand } from "../entities/product-brand.entity";
-import { ProductDiscount } from "../entities/product-discount.entity";
-import { ProductInventory } from "../entities/product-inventory.entity";
-import { BrandToCategory } from "../entities/brand-to-category.entity";
-import { BrandToSubCategory } from "../entities/brand-to-subCategory.entity";
-import { CloudFiles } from "../entities/cloud-files.entity";
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import configurations from '../config/db.config';
+import { User } from '../entities/user.entity';
+import { BusinessCard } from '../entities/business-card.entity';
+import { Business } from '../entities/business.entity';
+import { BusinessLocation } from '../entities/business-location.entity';
+import { BusinessBranch } from '../entities/business-branch.entity';
+import { Admin } from '../entities/admin-entity';
+import { AdminType } from '../entities/type-admin.entity';
+import { BusinessCategory } from '../entities/business-category.entity';
+import { BusinessToCategory } from '../entities/business-to-category';
+import { Telephone } from '../entities/telephone.entity';
+import { BusinessPosition } from '../entities/business-position.entity';
+import { Product } from '../entities/product.entity';
+import { ProductSubCategory } from '../entities/product-subCategory.entity';
+import { ProductBrand } from '../entities/product-brand.entity';
+import { ProductDiscount } from '../entities/product-discount.entity';
+import { ProductInventory } from '../entities/product-inventory.entity';
+import { BrandToCategory } from '../entities/brand-to-category.entity';
+import { BrandToSubCategory } from '../entities/brand-to-subCategory.entity';
+import { CloudFiles } from '../entities/cloud-files.entity';
+import { join } from 'path';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [
         ConfigModule.forRoot({
-          envFilePath: ".development.env",
+          envFilePath: '.development.env',
           isGlobal: true,
           load: [configurations],
         }),
       ],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: configService.get<any>("database.type"),
-        host: configService.get<string>("database.host"),
-        port: configService.get<number>("database.port"),
-        password: configService.get<any>("database.password"),
-        username: configService.get<any>("database.username"),
-        // entities: [join(__dirname, "**", "*.entity.{ts,js}")],
+        type: configService.get<any>('database.type'),
+        host: configService.get<string>('database.host'),
+        port: configService.get<number>('database.port'),
+        password: configService.get<any>('database.password'),
+        username: configService.get<any>('database.username'),
+        // entities: (() => {
+        //   const dir = join(__dirname, '../**/*.entity.{js,ts}');
+        //   console.log('Testee entities : ', __dirname);
+        //   return ['apps/backendrepo/src/app/v1/entities/*.entity.ts'];
+        // })(),
+        // entries: [
+        //   __dirname + '../../dist/apps/backendrepo/src/app/v1/entities/*.js',
+        // ],
+        // entities: [
+        //   'join(__dirname, "**", "**", "**", "*", "*.entity.{ts,js}")',
+        // ],
         entities: [
           User,
           BusinessCard,
@@ -61,8 +72,13 @@ import { CloudFiles } from "../entities/cloud-files.entity";
           BrandToSubCategory,
           CloudFiles,
         ],
-        database: "appdb",
-        synchronize: true,
+        database: 'appdb',
+        synchronize: false,
+        migrations: ['dist/app/db/migrations/*.js'],
+        cli: {
+          migrationsDir: 'dist/app/db/migrations',
+        },
+
         // logging: true,
       }),
     }),
